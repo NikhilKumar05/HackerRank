@@ -1,0 +1,81 @@
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', inputStdin => {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', _ => {
+    inputString = inputString.replace(/\s*$/, '')
+        .split('\n')
+        .map(str => str.replace(/\s*$/, ''));
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+function designerPdfViewer(h, word) {
+
+    var obj= new Object();
+
+    var code= 97;
+
+    var maxHeight=0; 
+
+    var height=0;
+
+    for(var i=0; i<=25; i++){
+
+        obj[String.fromCharCode(code)]= h[i];
+
+        code++;
+    }
+
+    for(var i=0; i<word.length; i++){
+
+        height= obj[word.charAt(i)];
+
+        maxHeight= Math.max(maxHeight,height);
+    }
+
+    return (word.length*maxHeight);
+}
+
+function main() {
+
+    h = readLine().split(' ');
+
+    h = h.map(Number);
+
+    var word = readLine();
+
+    var result = designerPdfViewer(h, word);
+
+    process.stdout.write("" + result + "\n");
+
+}
+
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const h = readLine().split(' ').map(hTemp => parseInt(hTemp, 10));
+
+    const word = readLine();
+
+    let result = designerPdfViewer(h, word);
+
+    ws.write(result + "\n");
+
+    ws.end();
+}
