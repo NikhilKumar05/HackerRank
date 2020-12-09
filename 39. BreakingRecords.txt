@@ -1,0 +1,63 @@
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', inputStdin => {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+    inputString = inputString.replace(/\s*$/, '')
+        .split('\n')
+        .map(str => str.replace(/\s*$/, ''));
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+    function breakingRecords(scores) {
+
+    let l = scores[0],
+        h = scores[0],
+        lc = 0,
+        hc = 0
+
+    for (var i = 1; i < scores.length; ++i) {
+        if (h < scores[i]) {
+        h = scores[i]
+        ++hc
+        } else if (l > scores[i]) {
+        l = scores[i]
+        ++lc
+        }
+    }
+
+    return [hc, lc]
+    }
+
+    console.log(breakingRecords([10, 5, 20, 20, 4, 5, 2, 25, 1]))
+    console.log(breakingRecords([3, 4, 21, 36, 10, 28, 35, 5, 24, 42]))
+
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const n = parseInt(readLine(), 10);
+
+    const scores = readLine().split(' ').map(scoresTemp => parseInt(scoresTemp, 10));
+
+    const result = breakingRecords(scores);
+
+    ws.write(result.join(' ') + '\n');
+
+    ws.end();
+}

@@ -1,0 +1,58 @@
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', inputStdin => {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', _ => {
+    inputString = inputString.replace(/\s*$/, '')
+        .split('\n')
+        .map(str => str.replace(/\s*$/, ''));
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+function findDigits(n) {
+    let a = n.toString().split(''),
+        r = 0
+
+    for (let i = a.length; i-- > 0;) {
+        if (n % Number(a[i]) == 0)
+        ++r
+    }
+
+    return r
+    }
+
+    console.log(findDigits(111))
+    console.log(findDigits(12))
+    console.log(findDigits(1012))
+
+
+    function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const t = parseInt(readLine(), 10);
+
+    for (let tItr = 0; tItr < t; tItr++) {
+        const n = parseInt(readLine(), 10);
+
+        let result = findDigits(n);
+
+        ws.write(result + "\n");
+    }
+
+    ws.end();
+}
