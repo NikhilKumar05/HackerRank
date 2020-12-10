@@ -1,0 +1,77 @@
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', inputStdin => {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', _ => {
+    inputString = inputString.replace(/\s*$/, '')
+        .split('\n')
+        .map(str => str.replace(/\s*$/, ''));
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+function workbook(n, k, arr) {
+
+let i = 0,
+      p = 0,
+      s = 0
+
+  while (i < arr.length) {
+
+    let q = arr[i],
+        j = 0
+
+    while (j < q) {
+
+      let r = j + k
+
+      if (r > q)
+        r = q
+
+      if (p >= j && p <= r - 1)
+        ++s
+
+      j = r
+      ++p
+    }
+
+    ++i
+  }
+
+  return s
+}
+
+console.log(workbook(5, 3, [4,2,6,1,10]))
+
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const nk = readLine().split(' ');
+
+    const n = parseInt(nk[0], 10);
+
+    const k = parseInt(nk[1], 10);
+
+    const arr = readLine().split(' ').map(arrTemp => parseInt(arrTemp, 10));
+
+    let result = workbook(n, k, arr);
+
+    ws.write(result + "\n");
+
+    ws.end();
+}
